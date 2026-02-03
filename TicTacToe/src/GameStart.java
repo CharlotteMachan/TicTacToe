@@ -8,7 +8,7 @@ public class GameStart extends JFrame implements ActionListener {
     JPanel panel, panelRB, panelB;
     JLabel titleLabel;
     JButton startButton, exitButton;
-    JRadioButton userButton, compButton;
+    JRadioButton userButton, compButton, easyButton, hardButton;
     ButtonGroup group;
     
     int userComp = 0;
@@ -31,7 +31,7 @@ public class GameStart extends JFrame implements ActionListener {
 
         //panel for radio buttons
         panelRB = new JPanel();
-        panelRB.setLayout(new GridLayout(1, 2, 10, 0));
+        panelRB.setLayout(new GridLayout(2, 2, 10, 0));
         panelRB.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         //Radio buttons
@@ -40,15 +40,35 @@ public class GameStart extends JFrame implements ActionListener {
         compButton = new JRadioButton("User vs Computer");
         userButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         compButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        
-        //Button group
-        ButtonGroup group = new ButtonGroup();
-        group.add(userButton);
-        group.add(compButton);
+
+        easyButton = new JRadioButton("Easy");
+        easyButton.setSelected(true);
+        easyButton.setVisible(false);
+        hardButton = new JRadioButton("Hard");
+        hardButton.setVisible(false);
+        easyButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        hardButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        userButton.addActionListener(this);
+        compButton.addActionListener(this);
+        easyButton.addActionListener(this);
+        hardButton.addActionListener(this);
+
+        //Game mode Button group
+        ButtonGroup modeGroup = new ButtonGroup();
+        modeGroup.add(userButton);
+        modeGroup.add(compButton);
+
+        //Game difficulty button group
+        ButtonGroup diffGroup = new ButtonGroup();
+        diffGroup.add(easyButton);
+        diffGroup.add(hardButton);
         
         //Add radio btns to panel
         panelRB.add(userButton);
         panelRB.add(compButton);
+        panelRB.add(easyButton);
+        panelRB.add(hardButton);
         
         //Panel for all buttons
         panel = new JPanel();
@@ -88,13 +108,32 @@ public class GameStart extends JFrame implements ActionListener {
         frame.setVisible(true);
     }
 
+    private void gameDifficulty(int mode){
+        if (mode == 0){
+            easyButton.setVisible(false);
+            hardButton.setVisible(false);
+        } else {
+            easyButton.setVisible(true);
+            hardButton.setVisible(true);
+        }
+
+        panelRB.revalidate();
+        panelRB.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         
         if (e.getSource() == userButton){
             userComp = 0;
+            gameDifficulty(userComp);
         } else if (e.getSource() == compButton){
             userComp = 1;
+            gameDifficulty(userComp);
+        } else if (e.getSource() == easyButton){
+            level = 0;
+        } else if (e.getSource() == hardButton){
+            level = 1;
         }
         
         if (e.getSource() == startButton) {
